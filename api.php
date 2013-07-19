@@ -1,54 +1,62 @@
 <?php
+header('Content-type: text/html');
+putenv('PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/core_perl:.');
+
 if (file_exists("msg"))
 {
 	$msg = file_get_contents("msg");
 	unlink("msg");
 	$return = json_encode(array("msg"=>$msg));
-}
-elseif (!file_exists("curSong.json"))
-{
-	$return = json_encode(array("album"=>"","loved"=>false,"artist"=>"Pianobar is starting up...", "title"=>"Hello There", "artURL"=>"inc/pandora.png", "startup"=>true));
-}
-elseif ($_GET['control']) 
-{
-	$c = $_GET['control'];
-	if ($c == "e")
-	{
+} elseif (!(shell_exec("ps cax | grep pianobar"))) {
+	$return = json_encode(array("album"=>"","loved"=>false,"artist"=>"the pianobar service is loading", "title"=>"Loading...", "artURL"=>"inc/pandora.png", "startup"=>true));
+	$cmd = "pianobar &> /dev/null &";
+    exec($cmd);
+} elseif (isset($_GET['command'])&&$_GET['command']) {
+	$c = $_GET['command'];
+	if ($c == "e") {
 		$return = getDetails();
-	}
-	else
-	{
+	} else {
 		file_put_contents("ctl", "$c\n");
 		
-		if ($c == "n") file_put_contents("msg", "Skipped");
-		if ($c == "q")
-		{
-			file_put_contents("msg", "Shutdown");
-			unlink("curSong.json");
-			unlink("stationList");
-			foreach (glob("albumart/*.jpg") as $delete) unlink($delete);
-		}
-		if ($c[0] == "s") file_put_contents("msg", "Changing stations");
+		if ($c == "n") {
+            file_put_contents("msg", "Skipped");
+		} elseif ($c == "q") {
+			file_put_contents("msg", "Rebooting");
+            sleep(3);
+            shell_exec("killall pianobar");
+			//foreach (glob("albumart/*.jpg") as $delete) unlink($delete);
+		} elseif($c[0] == "c") {
+            if (strlen($c)>1) {
+                file_put_contents("ctl", "0\n");
+                file_put_contents("msg", "Adding Station");
+            } else {
+                file_put_contents("ctl", "\n");
+                file_put_contents("msg", "No Station Entered");
+            }
+		} elseif ($c[0] == "s") {
+            file_put_contents("msg", "Changing stations");
+        }
 		$return = json_encode(array("response"=>"ok"));
 	}
-}
-elseif ($_GET['station'] != null)
-{
+} elseif (isset($_GET['station']) && $_GET['station'] != null) {
+	$return="";
 	$i = $_GET['station']*10;
 	$max = $i+10;
 	$arrayStations = explode("|", file_get_contents("stationList"));
-	
-	if ($i > 0) $return = "<a onclick=getStations(--index);>B - Back</a><br />\n";
+	$return .= "<a onclick=\"clearStations();\"; id=\"closeStations\"><span>esc - Cancel</span></a><br />\n";
+	if ($i > 0)
+        $return .= "<a onclick=\"getStations(".($_GET['station']-1).");\">B - Back</a><br />\n";
 	for($i; ($i < $max) && ($i < count($arrayStations) ); $i++)
 	{
 		$stationRaw = $arrayStations[$i];
 		$station = explode("=", $stationRaw);
-		$return .= "<a onclick=control('s".$station[0]."');>".substr($station[0], -1)." - ".$station[1]."</a><br />\n";
+		$return .= "<a onclick=\"sendCommand('s".$station[0]."');hideStations();\">".substr($station[0], -1)." - ".$station[1]."</a><br />\n";
 	}
-	if (count($arrayStations) > $max) $return .= "<a onclick=getStations(++index);>N - Next</a><br />";
+	if (count($arrayStations) > $max)
+        $return .= "<a onclick=\"getStations(".($_GET['station']+1).");\">N - Next</a><br />";
+} else {
+    $return = getSong();
 }
-else $return = getSong();
-
 echo $return;
 
 function getSong() {
@@ -56,20 +64,20 @@ function getSong() {
 	
 	$songInfo = json_decode(file_get_contents("curSong.json"), true);
 	$coverart = $songInfo["artURL"];
-	if ($coverart)
-	{
+	if ($coverart) {
 		$temp = "albumart/".md5($songInfo["album"]).".jpg";
-		if (!file_exists($temp)) file_put_contents($temp, file_get_contents($coverart));
+		if (!file_exists($temp))
+            file_put_contents($temp, file_get_contents($coverart));
 		$coverart = $temp;
+	} else {
+        $coverart = "inc/pandora.png";
 	}
-	else $coverart = "inc/pandora.png";
 	$songInfo = array_replace($songInfo, array("artURL"=>$coverart));
 	return json_encode($songInfo);
 }
-function getDetails($url = NULL)
-{
-	if (!$url)
-	{
+
+function getDetails($url = NULL) {
+	if (!$url) {
 		$songInfo = json_decode(file_get_contents("curSong.json"));
 		$url = $songInfo->explainURL;
 	}
@@ -77,15 +85,16 @@ function getDetails($url = NULL)
 	#preg_match("#features of this track(.*?)\<p\>These are just a#is", $data, $matches); // uncomment this if explanations act funny
 	preg_match("#features of this track(.*?)\</div\>#is", $data, $matches);
 	$strip = array("Features of This Track</h2>", "<div style=\"display: none;\">", "</div>", "<p>These are just a");
-	if (!$matches[0]) return "We were unable to get the song's explanation. Sorry about that.";
+	if (!$matches[0])
+        return "We were unable to get the song's explanation. Sorry about that.";
 	$data = explode("<br>", str_replace($strip, "", $matches[0]));
 	unset($data[count($data)-1]);
-	if (trim($data[count($data)-1]) == "many other comedic similarities")
-	{
+	if (trim($data[count($data)-1]) == "many other comedic similarities") {
 		$ending = "many other comedic similarities";
 		unset($data[count($data)-1]);
+	} else {
+        $ending = "many other similarites as identified by the Music Genome Project";
 	}
-	else $ending = "many other similarites as identified by the Music Genome Project";
 	$data = implode(", ", array_map('trim', $data));
 	return json_encode(array("explanation"=>"We're playing this track because it features $data, and $ending."));
 }

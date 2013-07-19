@@ -1,13 +1,48 @@
-body {background-color: #000; color: #fff; font-family: Arial, sans-serif;}
+body {
+	background-color: #000;
+	color: #fff;
+	font-family: Arial, sans-serif;
+}
 
 #content, #stationList, #msg {width: 80%; position:absolute; top:50%; left:50%; height:330px; width:1000px; margin-top:-165px; margin-left:-500px; font-weight: bold;}
 #content h1 {font-size:4em;}
 #msg h1 {font-size:6em; text-align:center;}
-#content h2 {font-size:2em; margin:0}
+#content h2 {font-size:2em; margin:0;}
 #content h2.album {font-style: italic;}
-#content img.albumart {width:300px; height:300px; float:left; padding-right:10px; margin-bottom:100px}
+#content img.albumart {width:300px; height:300px; float:left; padding-right:10px; margin-bottom:100px;}
 #content img.love {float:right; width: 20px;}
 #content p.details {display:none;}
 
-#controls {float:right; text-align: right;}
-a:hover {cursor: pointer;}
+a {cursor: pointer;}
+#controls a {float:left;}
+#controls a.right {float: right;}
+
+#controls a span {
+	display: block;
+	width: 24px;
+	height: 24px;
+	text-indent:-9000px;
+}
+
+#controls a span.nocontrol {cursor: default;}
+
+#pause   {background: url('controls-play.png'    ) center center no-repeat;}
+#next    {background: url('controls-next.png'    ) center center no-repeat;}
+#love    {background: url('controls-love.png'    ) center center no-repeat;}
+#ban     {background: url('controls-ban.png'     ) center center no-repeat;}
+#tired   {background: url('controls-tired.png'   ) center center no-repeat;}
+#explain {background: url('controls-explain.png' ) center center no-repeat;}
+#station {background: url('controls-stations.png') center center no-repeat;}
+#voldown {background: url('controls-voldown.png' ) center center no-repeat;}
+#volume  {background: url('controls-volume.png'  ) center center no-repeat;}
+#volup   {background: url('controls-volup.png'   ) center center no-repeat;}
+#restart {background: url('controls-restart.png' ) center center no-repeat;}
+
+a#closeStations {float: right;}
+a#closeStations span {
+    display: block;
+	width: 24px;
+	height: 24px;
+	text-indent:-9000px;
+	background: url('controls-close.png') center center no-repeat;
+}
