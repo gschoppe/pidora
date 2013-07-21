@@ -10,7 +10,8 @@
 </head>
 <body>
     <div id="controls">
-        <a onclick="stationSetup();"><span id="station" title="Station">Station</span></a>
+        <a onclick="stationSetup();"    ><span id="changestation" title="Change Station"    >Change Station    </span></a>
+        <a onclick="showNewStation();"  ><span id="addstation"    title="Create New Station">Create New Station</span></a>
         <a><span class="nocontrol"> | </span></a>
         <a onclick="sendCommand('p');"  ><span id="pause"   title="Pause"  >Pause  </span></a>
         <a onclick="sendCommand('n');"  ><span id="next"    title="Next"   >Next   </span></a>
@@ -18,13 +19,13 @@
         <a onclick="sendCommand('+');"  ><span id="love"    title="Love"   >Love   </span></a>
         <a onclick="sendCommand('-');"  ><span id="ban"     title="Ban"    >Ban    </span></a>
         <a onclick="sendCommand('t');"  ><span id="tired"   title="Tired"  >Tired  </span></a>
-        <a onclick="explain();"     ><span id="explain" title="Explain">Explain</span></a>
+        <a onclick="explain();"         ><span id="explain" title="Explain">Explain</span></a>
         <a><span class="nocontrol"> | </span></a>
         <a onclick="sendCommand('(');"  ><span id="voldown" title="Vol -"  >Vol -  </span></a>
         <a><span class="nocontrol" id="volume">Volume</span><a>
         <a onclick="sendCommand(')');"  ><span id="volup"   title="Vol +"  >Vol +  </span></a>
 
-        <a class="right" onclick="sendCommand('q');"  ><span id="restart" title="Restart">Restart</span></a>
+        <a class="right" onclick="sendCommand('q');"><span id="restart" title="Restart">Restart</span></a>
     </div>
 
     <div id="content">
@@ -41,6 +42,16 @@
 
     <div id="msg" style="display:none">
         <h1></h1>
+    </div>
+    
+    <div id="newStation" style="display:none">
+        <a onclick="clearStations();"; id="closeStations"><span>Cancel</span></a>
+        <div id="newStationInner">
+            <form id="newStationForm">
+                <input type="text" id="newStationName" placeholder="Artist or Song Title"/>
+                <div id="newStationButton" title="Create Station">Create Station</div>
+            </form>
+        </div>
     </div>
 </body>
 </html>

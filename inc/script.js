@@ -26,10 +26,13 @@ $(document).ready(function() {
 			}
 		});
 	}, 3000);
+    
+    $('#newStationForm'  ).submit(function() {addStation();});
+    $('#newStationButton').click (function() {addStation();});
 });
 
 function clearScreen(doNext) {
-	$('#content, #msg, #stationList').fadeOut('slow').promise().done(function() {
+	$('#content, #msg, #stationList, #newStation').fadeOut('slow').promise().done(function() {
 		doNext();
 	});
 }
@@ -94,6 +97,24 @@ function clearStations() {
         $('#content').fadeIn('slow');
         setMousetraps();
     });
+}
+
+function showNewStation() {
+    clearScreen(function() {
+        $('#newStation').fadeIn('slow', function(){
+            $('#newStationName').focus();
+        });
+        Mousetrap.reset();
+        Mousetrap.bind('esc', function() { clearStations(); });
+    });
+}
+
+function addStation() {
+    var stationName = $('#newStationName').val();
+    if(stationName) {
+        sendCommand('c'+stationName);
+    }
+    clearStations();
 }
 
 function sendCommand(action) {
