@@ -10,13 +10,22 @@ $(document).ready(function() {
 					});
 				}
 				newSongData = newData;
-				if(JSON.stringify(oldSongData) !== JSON.stringify(newSongData)) {
+				if((typeof oldSongData === "undefined") ||
+                   (oldSongData.title   != newSongData.title  ) || 
+				   (oldSongData.artist  != newSongData.artist ) ||
+				   (oldSongData.album   != newSongData.album  ) ||
+				   (oldSongData.details != newSongData.details) ||
+				   (oldSongData.loved   != newSongData.loved  ) ||
+				   (oldSongData.artURL  != newSongData.artURL )) {
 					oldSongData = newSongData;
 					clearScreen(function() {
 						updateSong(newSongData);
 						$('#content').fadeIn('slow');
 					});
 					setMousetraps();
+				}
+				if(oldSongData.duration != newSongData.duration) {
+					$('#content .duration').html(newSongData.duration);
 				}
 			} else if(newData.msg) {
 				clearScreen(function() {
@@ -25,7 +34,7 @@ $(document).ready(function() {
 				});
 			}
 		});
-	}, 3000);
+	}, 1000);
     
     $('#newStationForm'  ).submit(function() {addStation();});
     $('#newStationButton').click (function() {addStation();});
@@ -41,6 +50,14 @@ function updateSong(data) {
 	$('#content h1').html(data.title);
 	$('#content h2').html(data.artist);
 	$('#content .album').html(data.album);
+	if(data.duration == "NEWS") {
+        $('#content .duration').html("");
+        $('#controls').fadeOut('fast');
+	} else {
+        $('#content .duration').html(data.duration);
+        if(!$('#controls').is(':visible'))
+            $('#controls').fadeIn('slow');
+	}
 	$('#content .details').html("EMPTY").hide();
 	if(data.loved) {
 		$('#content .love').show();

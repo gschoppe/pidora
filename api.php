@@ -9,7 +9,7 @@ if (file_exists("msg"))
 	$return = json_encode(array("msg"=>$msg));
 } elseif (!(shell_exec("ps cax | grep pianobar"))) {
 	$return = json_encode(array("album"=>"","loved"=>false,"artist"=>"the pianobar service is loading", "title"=>"Loading...", "artURL"=>"inc/pandora.png", "startup"=>true));
-	$cmd = "pianobar &> /dev/null &";
+	$cmd = "pianobar &> ~/pbarout &";
     exec($cmd);
 } elseif (isset($_GET['command'])&&$_GET['command']) {
 	$c = $_GET['command'];
@@ -72,7 +72,13 @@ function getSong() {
 	} else {
         $coverart = "inc/pandora.png";
 	}
-	$songInfo = array_replace($songInfo, array("artURL"=>$coverart));
+	$songInfo["artURL"] = $coverart;
+	
+	$lastLine = getLastLine("pbarout");
+	$lastLine = explode("-", $lastLine);
+	$duration = $lastLine[count($lastLine)-1];
+	$songInfo["duration"] = $duration;
+	
 	return json_encode($songInfo);
 }
 
@@ -97,5 +103,30 @@ function getDetails($url = NULL) {
 	}
 	$data = implode(", ", array_map('trim', $data));
 	return json_encode(array("explanation"=>"We're playing this track because it features $data, and $ending."));
+}
+
+function getLastLine($filename){
+    $f      = fopen($filename, 'r');
+    $cursor = -1;
+    $line   = '';
+    fseek($f, $cursor, SEEK_END);
+    $char   = fgetc($f);
+    // test for empty file
+    if($char === false)
+        return false;
+    // Trim trailing newline chars of the file
+    while ($char === "\n" || $char === "\r" || $char === " ") {
+        fseek($f, $cursor--, SEEK_END);
+        $char = fgetc($f);
+    }
+    // Read until the start of file or first newline char
+    while ($char !== false && $char !== "\n" && $char !== "\r" ) {
+        // Prepend the new char
+        $line = $char . $line;
+        fseek($f, $cursor--, SEEK_END);
+        $char = fgetc($f);
+    }
+    
+    return trim($line);
 }
 ?>
