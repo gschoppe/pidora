@@ -9,7 +9,8 @@ if (file_exists("msg"))
 	$return = json_encode(array("msg"=>$msg));
 } elseif (!(shell_exec("ps cax | grep pianobar"))) {
 	$return = json_encode(array("album"=>"","loved"=>false,"artist"=>"the pianobar service is loading", "title"=>"Loading...", "artURL"=>"inc/pandora.png", "startup"=>true));
-	$cmd = "pianobar &> ~/pbarout &";
+	unlink("pbarout");
+	$cmd = "pianobar &>> ~/pbarout &";
     exec($cmd);
 } elseif (isset($_GET['command'])&&$_GET['command']) {
 	$c = $_GET['command'];
