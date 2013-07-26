@@ -20,7 +20,8 @@ A network-controlled pandora client for embedded systems, such as the Raspberry 
 <tt>wget https://dl.dropbox.com/u/42238/pogoplug/v2/default/asound.conf</tt><br/>
 <i>depending on your DAC</i>
 4.	Download, extract, and place the files contained in this repository's "filesystem" directory in the proper locations relative to root
-5.	Enter the following commands:<br/>
+5.	Open /srv/http/.config/pianobar/config in your favorite text editor, and enter your pandora username and password in the indicated spots 
+6.	Enter the following commands:<br/>
 <tt>gpasswd -a http audio</tt><br/>
 <tt>mkfifo /srv/http/ctl</tt><br/>
 <tt>chown -R http /srv/http</tt><br/>
@@ -28,7 +29,7 @@ A network-controlled pandora client for embedded systems, such as the Raspberry 
 <tt>systemctl enable php-fpm</tt><br/>
 <tt>systemctl enable lighttpd</tt><br/>
 <tt>reboot</tt>
-6.	open your browser to the IP address of the device (or 127.0.0.1, if you are working from the device directly)
+7.	open your browser to the IP address of the device (or 127.0.0.1, if you are working from the device directly)
 
 That's it for the installation.
 
