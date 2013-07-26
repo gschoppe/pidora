@@ -30,7 +30,7 @@ A network-controlled pandora client for embedded systems, such as the Raspberry 
 <tt>reboot</tt>
 6.	open your browser to the IP address of the device (or 127.0.0.1, if you are working from the device directly)
 
-That's it for the installation. Now let's configure our machine to automatically launch the web browser and pianobar.
+That's it for the installation.
 
 Contact me
 ==========
