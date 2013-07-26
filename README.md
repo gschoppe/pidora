@@ -7,26 +7,26 @@ A network-controlled pandora client for embedded systems, such as the Raspberry 
 
 1.	Install Arch Linux on your device
 2.	Open a terminal or connect via SSH
-3.	Enter the following commands:
-<tt>pacman -Syu</tt>
-<tt>timedatectl set-timezone America/New_York</tt>
-<tt>pacman -S lighttpd php php-fpm sqlite php-sqlite libao alsa-utils avahi libpulse pianobar mpg123 python-feedparser sudo</tt>
-<tt>echo "use_mmap=no" >> /etc/libao.conf</tt>
-<tt>cd /etc</tt>
-<tt>wget https://dl.dropbox.com/u/42238/pogoplug/v2/asound.conf</tt>
-<i>OR</i>
-<tt>wget https://dl.dropbox.com/u/42238/pogoplug/v2/48khz/asound.conf</tt>
-<i>OR</i>
-<tt>wget https://dl.dropbox.com/u/42238/pogoplug/v2/default/asound.conf</tt>
+3.	Enter the following commands:<br/>
+<tt>pacman -Syu</tt><br/>
+<tt>timedatectl set-timezone America/New_York</tt><br/>
+<tt>pacman -S lighttpd php php-fpm sqlite php-sqlite libao alsa-utils avahi libpulse pianobar mpg123 python-feedparser sudo</tt><br/>
+<tt>echo "use_mmap=no" >> /etc/libao.conf</tt><br/>
+<tt>cd /etc</tt><br/>
+<tt>wget https://dl.dropbox.com/u/42238/pogoplug/v2/asound.conf</tt><br/>
+<i>OR</i><br/>
+<tt>wget https://dl.dropbox.com/u/42238/pogoplug/v2/48khz/asound.conf</tt><br/>
+<i>OR</i><br/>
+<tt>wget https://dl.dropbox.com/u/42238/pogoplug/v2/default/asound.conf</tt><br/>
 <i>depending on your DAC</i>
 4.	Download, extract, and place the files contained in this repository's "filesystem" directory in the proper locations relative to root
-5.	Enter the following commands:
-<tt>gpasswd -a http audio</tt>
-<tt>mkfifo /srv/http/ctl</tt>
-<tt>chown -R http /srv/http</tt>
-<tt>chmod -R 777 /srv/http</tt>
-<tt>systemctl enable php-fpm</tt>
-<tt>systemctl enable lighttpd</tt>
+5.	Enter the following commands:<br/>
+<tt>gpasswd -a http audio</tt><br/>
+<tt>mkfifo /srv/http/ctl</tt><br/>
+<tt>chown -R http /srv/http</tt><br/>
+<tt>chmod -R 777 /srv/http</tt><br/>
+<tt>systemctl enable php-fpm</tt><br/>
+<tt>systemctl enable lighttpd</tt><br/>
 <tt>reboot</tt>
 6.	open your browser to the IP address of the device (or 127.0.0.1, if you are working from the device directly)
 
