@@ -30,7 +30,6 @@ detailUrl = fields["detailUrl"]
 if event == "songstart":
 	open(www + "curSong.json", "w").write(buildJSON(title, artist, album, coverArt, rating, detailUrl))
 elif event == "songfinish":
-	open(www + "pbarout", "w").write("")
 	import feedparser, urllib
 	feed = feedparser.parse("http://www.npr.org/rss/podcast.php?id=500005")
 	if not os.path.lexists(www + "lastNews"): open(www + "lastNews", "w").write("-1")
@@ -44,7 +43,7 @@ elif event == "songfinish":
 		open(www + "curSong.json", "w").write(buildJSON(feed.entries[0].title, feed.feed.title, feed.feed.title, "http://media.npr.org/images/podcasts/2013/primary/hourly_news_summary.png", 0, "null"))
 		open(www + "pbarout", "w").write("NEWS")
 		process(["mpg123", feed.entries[0].id])
-		open(www + "pbarout", "w").write("")
+		os.system("> " + www + "pbarout")
 		open(www + "ctl", "w").write("p")
 elif event == "songlove":
 	open(www + "curSong.json", "w").write(buildJSON(title, artist, album, coverArt, 1, detailUrl))

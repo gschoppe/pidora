@@ -1,0 +1,7 @@
+#uncomment the line below, if you need to use a proxy to listen to pandora in your country
+#control_proxy = http://165.225.xxx.xxx:80 
+tls_fingerprint = 2D0AFDAFA16F4B5C0A43F3CB1D4752F9535507C0
+user = ENTER_YOUR_EMAIL_ADDRESS_HERE
+password = ENTER_YOUR_PASSWORD_HERE
+event_command = /srv/http/pianobar-eventcmd/update.py
+fifo = /srv/http/ctl
