@@ -22,7 +22,24 @@ if (file_exists($msgPath))
 	exec($cmd);
 } elseif (isset($_GET['command'])&&$_GET['command']) {
 	$c = $_GET['command'];
-	if ($c == "e") {
+	if (getLastLine($pbarOutPath) == "NEWS") {
+		switch($c) {
+			case "p" :
+				file_put_contents($mpgInPath, "p\n");
+				break;
+			case "n" :
+				file_put_contents($mpgInPath, "q\n");
+				break;
+			case "(" :
+				file_put_contents($mpgInPath, "-\n");
+				break;
+			case ")" :
+				file_put_contents($mpgInPath, "+\n");
+				break;
+			default :
+				
+		}
+	} elseif ($c == "e") {
 		$return = getDetails();
 	} else {
 		file_put_contents($pbarInPath, "$c\n");

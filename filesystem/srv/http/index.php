@@ -19,7 +19,7 @@
         <a onclick="sendCommand('+');"  ><span id="love"    title="Love"   >Love   </span></a>
         <a onclick="sendCommand('-');"  ><span id="ban"     title="Ban"    >Ban    </span></a>
         <a onclick="sendCommand('t');"  ><span id="tired"   title="Tired"  >Tired  </span></a>
-        <a onclick="explain();"         ><span id="explain" title="Explain">Explain</span></a>
+        <a onclick="explainSong();"     ><span id="explain" title="Explain">Explain</span></a>
         <a><span class="nocontrol"> | </span></a>
         <a onclick="sendCommand('(');"  ><span id="voldown" title="Vol -"  >Vol -  </span></a>
         <a><span class="nocontrol" id="volume">Volume</span><a>
