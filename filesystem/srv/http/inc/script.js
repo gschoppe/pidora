@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	var newDataPlain, oldSongData, newSongData;
 	window.setInterval(function() {
-		$.get("api.php", function(newDataPlain) {
+		$.get("/api.php", function(newDataPlain) {
 			newData = JSON.parse(newDataPlain);
 			if(newData.title) {
 				if($('#msg').is(':visible')) {
@@ -24,8 +24,18 @@ $(document).ready(function() {
 					});
 					setMousetraps();
 				}
-				if(oldSongData.duration != newSongData.duration) {
-					$('#content .duration').html(newSongData.duration);
+				if(oldSongData.remaining != newSongData.remaining) {
+					$('#content .remaining').html(newSongData.remaining);
+					$('#content .duration' ).html(newSongData.duration );
+					var progressBarWidth = "" + newSongData.percentage+"%";
+					
+					if(!newSongData.remaining || !newSongData.duration) {
+						$('#content .time').hide();
+						$("#content div.progress_bar div.marker").width(0);
+					}else {
+						$("#content div.progress_bar div.marker").animate({ width: progressBarWidth }, 1000);
+						$('#content .time').fadeIn("slow");
+					}
 				}
 			} else if(newData.msg) {
 				clearScreen(function() {

@@ -34,14 +34,17 @@ a {cursor: pointer;}
 
 #restart       {background: url('controls-restart.png'   ) center center no-repeat;}
 
-#content, #stationList, #msg, #newStation {width: 80%; position:absolute; top:50%; left:50%; height:330px; width:1000px; margin-top:-165px; margin-left:-500px; font-weight: bold;}
-#content h1 {font-size:4em;}
+#content, #stationList, #msg, #newStation {width: 80%; position:absolute; top:50%; left:50%; height:300px; width:960px; margin-top:-165px; margin-left:-500px; font-weight: bold;}
 #msg h1 {font-size:6em; text-align:center;}
-#content h2 {font-size:2em; margin:0;}
+#content h1 {font-size:4em;margin: 0;padding:0;}
+#content h2 {font-size:2em; margin:0;padding:0;}
 #content h2.album {font-style: italic;}
-#content img.albumart {width:300px; height:300px; float:left; padding-right:10px; margin-bottom:100px;}
+#content img.albumart {width:300px; height:300px; float:left; padding-right:10px;}
 #content img.love {float:right; width: 20px;}
 #content p.details {display:none;}
+#content div.time {position: absolute;bottom: 0px;margin-left: 310px; width: 650px; text-align: right; font-weight: bold;}
+#content div.progress_bar {height: 10px; padding: 1px; border: 1px solid #fff;}
+#content div.progress_bar div.marker {height: 10px; background-color: #fff; width: 0%;}
 
 #newStation div#newStationInner {
     position: absolute;

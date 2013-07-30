@@ -33,9 +33,12 @@
         <img src="inc/pandora.png" class="albumart" alt="Pandora logo" />
         <h1>Loading...</h1>
         <h2>Getting Status from Server...</h2>
-        <h2 class="album"   ></h2>
-        <h3 class="duration"></h3>
-        <p  class="details" >EMPTY</p>
+        <h2 class="album"></h2>
+        <div class="time" style="display: none;">
+            <div class="progress_bar"><div class="marker"></div></div>
+            <span class="remaining"></span>/<span class="duration"></span>
+        </div>
+        <p   class="details">EMPTY</p>
     </div>
 
     <div id="stationList" style="display:none">
