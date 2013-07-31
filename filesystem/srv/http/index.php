@@ -31,9 +31,11 @@
     <div id="content">
         <img src="inc/love.png"    class="love"   style="display:none" />
         <img src="inc/pandora.png" class="albumart" alt="Pandora logo" />
-        <h1>Loading...</h1>
-        <h2>Getting Status from Server...</h2>
-        <h2 class="album"></h2>
+        <div id="marquee-wrap" >
+            <h1>Loading...</h1>
+            <h2>Getting Status from Server...</h2>
+            <h2 class="album"></h2>
+        </div>
         <div class="time" style="display: none;">
             <div class="progress_bar"><div class="marker"></div></div>
             <span class="remaining"></span>/<span class="duration"></span>

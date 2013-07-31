@@ -5,8 +5,8 @@ from time import gmtime, strftime
 
 def process_mpg(input, output, thefile):
 	mpgout = open(output, "w")
-	subprocess.Popen(["mpg123","-R","--fifo", input], stdout=mpgout)
-	#time.sleep(1)
+	news_process = subprocess.Popen(["mpg123","-R","--fifo", input], stdout=mpgout)
+	time.sleep(.5)
 	os.system("echo \"load "+thefile+"\" > " + input)
 	is_stopped = 0
 	is_closed  = 0
@@ -16,11 +16,14 @@ def process_mpg(input, output, thefile):
 		for line in mpgmess:
 			if ("@P 0" in line):
 				is_stopped = 1
-		if(os.system("ps cax | grep mpg123") == ""):
+		if(not (news_process.poll() is None)):
 			is_stopped = 1
 			is_closed  = 1
 		mpgmess.close()
-	if(is_closed != 1): os.system("echo \"q\" > " + input)
+	if(is_closed != 1) :
+		os.system("echo \"q\" > " + input)
+		time.sleep(.5)
+		news_process.terminate
 	mpgout.close()
 
 def buildJSON(title, artist, album, artURL, loved, explainURL):
