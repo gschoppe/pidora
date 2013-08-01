@@ -18,43 +18,65 @@
     <link rel=stylesheet href=inc/mobile.css />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="/inc/jquery-animateoverflow.min.js"></script>
+    <script src="/inc/jquery-animateoverflow.min.js"></script>
     <script>
-        $(document).ready(function() {
-            var newDataPlain, oldSongData, newSongData;
-            doUpdate();
-            window.setInterval(function() {
-                doUpdate();
-            }, 3000);
-            
-            function doUpdate() {
-                $.get("/api.php", function(newDataPlain) {
-                    newData = JSON.parse(newDataPlain);
-                    if(newData.title) {
-                        newSongData = newData;
-                        if((typeof oldSongData === "undefined") ||
-                           (oldSongData.title     != newSongData.title  ) || 
-                           (oldSongData.artist    != newSongData.artist ) ||
-                           (oldSongData.album     != newSongData.album  ) ||
-                           (oldSongData.details   != newSongData.details) ||
-                           (oldSongData.loved     != newSongData.loved  ) ||
-                           (oldSongData.artURL    != newSongData.artURL ) ||
-                           (oldSongData.remaining != newSongData.remaining)) {
-                            oldSongData = newSongData;
-                            updateSong(newSongData);
+        function doUpdate(oldSongData) {
+            var newDataPlain, newSongData;
+            $.get("/api.php", function(newDataPlain) {
+                newData = JSON.parse(newDataPlain);
+                if(newData.title) {
+                    newSongData = newData;
+                    if((typeof oldSongData === "undefined") ||
+                       (oldSongData.title     != newSongData.title  ) || 
+                       (oldSongData.artist    != newSongData.artist ) ||
+                       (oldSongData.album     != newSongData.album  ) ||
+                       (oldSongData.details   != newSongData.details) ||
+                       (oldSongData.loved     != newSongData.loved  ) ||
+                       (oldSongData.artURL    != newSongData.artURL )) {
+                        oldSongData = newSongData;
+                        updateSong(newSongData);
+                    }
+                    if(oldSongData.remaining != newSongData.remaining) {
+                        if(newSongData.remaining) {
+                            $('.songRemaining').text(newSongData.remaining + " remaining");
+                        } else {
+                            $('.songRemaining').text("");
                         }
                     }
-                });
-            }
+                }
+                setTimeout(function() {
+                    doUpdate(oldSongData);
+                }, 3000);
+            });
+        }
+        
+        function updateSong(data) {
+            var title  = document.createElement('h1');
+            var artist = document.createElement('h2');
+            var album  = document.createElement('h2');
+
+            $(title ).text(data.title );
+            $(artist).text(data.artist);
+            $(album ).text(data.album ).addClass('album');
+            $("#info-wrap").html("").append(title,artist,album);
             
-            function updateSong(songData) {
-                $('.songTitle').text(songData.title);
-                $('.songArtist').text(songData.artist);
-                $('.songAlbum').text(songData.album);
-                $('.songCover').attr("src", songData.artURL).attr("alt", songData.album + " by " + songData.artist);
-                if(songData.remaining)
-                    $('.songRemaining').text(songData.remaining + " remaining");
+            if(data.loved) {
+                $('.love').show();
+            } else {
+                $('.love').hide();
             }
-            
+            $('.songCover').attr("src", data.artURL).attr("alt", data.album + " by " + data.artist);
+            if(data.remaining) {
+                $('.songRemaining').text(data.remaining + " remaining");
+            } else {
+                $('.songRemaining').text("");
+            }
+            $("h1, h2").animateOverflow();
+        }
+        
+        $(document).ready(function() {
+            var emptyVar;
+            doUpdate(emptyVar);
         });
     </script>
 </head>
@@ -72,9 +94,11 @@
     <div class="col1">
         <!-- Column 1 start -->
         <div class="displayed">
-            <h1><span class="songTitle"></span ></h1>
-            <h2><span class="songArtist"></span></h2>
-            <h2><span class="songAlbum"></span ></h2>
+            <div id="info-wrap">
+                <h1><span class="songTitle"></span ></h1>
+                <h2><span class="songArtist"></span></h2>
+                <h2><span class="songAlbum"></span ></h2>
+            </div>
             <span class="songRemaining"></span>
         </div>
         <img class="displayed songCover" src="/inc/pandora.png" width="350", height="350", alt="">

@@ -1,59 +1,64 @@
 $(document).ready(function() {
-    var newDataPlain, oldSongData, newSongData;
-    window.setInterval(function() {
-        $.get("/api.php", function(newDataPlain) {
-            newData = JSON.parse(newDataPlain);
-            if(newData.title) {
-                if($('#msg').is(':visible')) {
-                    clearScreen(function() {
-                        $('#content').fadeIn('slow');
-                        startScroll();
-                    });
-                }
-                newSongData = newData;
-                if((typeof oldSongData === "undefined") ||
-                   (oldSongData.title   != newSongData.title  ) || 
-                   (oldSongData.artist  != newSongData.artist ) ||
-                   (oldSongData.album   != newSongData.album  ) ||
-                   (oldSongData.details != newSongData.details) ||
-                   (oldSongData.loved   != newSongData.loved  ) ||
-                   (oldSongData.artURL  != newSongData.artURL )) {
-                    oldSongData = newSongData;
-                    clearScreen(function() {
-                        updateSong(newSongData);
-                        $('#content').fadeIn('slow');
-                        startScroll();
-                    });
-                    setMousetraps();
-                }
-                if(oldSongData.remaining != newSongData.remaining) {
-                    $('#content .remaining').html(newSongData.remaining);
-                    $('#content .duration' ).html(newSongData.duration );
-                    var progressBarWidth = "" + newSongData.percentage+"%";
-                    if(newSongData.percentage == null) {
-                        $('#content .time').hide();
-                        $("#content div.progress_bar div.marker").width(0);
-                    }else {
-                        if(oldSongData.duration == newSongData.duration) {
-                            $("#content div.progress_bar div.marker").animate({ width: progressBarWidth }, 1000);
-                        }else{
-                            $("#content div.progress_bar div.marker").width(progressBarWidth);
-                        }
-                        $('#content .time').fadeIn("slow");
-                    }
-                }
-            } else if(newData.msg) {
-                clearScreen(function() {
-                    $('#msg h1').html(newData.msg);
-                    $('#msg').fadeIn('slow');
-                });
-            }
-        });
-    }, 1000);
-    
+    var undefinedVar;
+    doUpdate(undefinedVar);
     $('#newStationForm'  ).submit(function() {addStation();});
     $('#newStationButton').click (function() {addStation();});
 });
+
+function doUpdate(oldSongData) {
+    var newDataPlain, newSongData;
+    $.get("/api.php", function(newDataPlain) {
+        newData = JSON.parse(newDataPlain);
+        if(newData.title) {
+            if($('#msg').is(':visible')) {
+                clearScreen(function() {
+                    $('#content').fadeIn('slow');
+                    startScroll();
+                });
+            }
+            newSongData = newData;
+            if((typeof oldSongData === "undefined") ||
+               (oldSongData.title   != newSongData.title  ) || 
+               (oldSongData.artist  != newSongData.artist ) ||
+               (oldSongData.album   != newSongData.album  ) ||
+               (oldSongData.details != newSongData.details) ||
+               (oldSongData.loved   != newSongData.loved  ) ||
+               (oldSongData.artURL  != newSongData.artURL )) {
+                oldSongData = newSongData;
+                clearScreen(function() {
+                    updateSong(newSongData);
+                    $('#content').fadeIn('slow');
+                    startScroll();
+                });
+                setMousetraps();
+            }
+            if(oldSongData.remaining != newSongData.remaining) {
+                $('#content .remaining').html(newSongData.remaining);
+                $('#content .duration' ).html(newSongData.duration );
+                var progressBarWidth = "" + newSongData.percentage+"%";
+                if(newSongData.percentage == null) {
+                    $('#content .time').hide();
+                    $("#content div.progress_bar div.marker").width(0);
+                }else {
+                    if(oldSongData.duration == newSongData.duration) {
+                        $("#content div.progress_bar div.marker").animate({ width: progressBarWidth }, 1000);
+                    }else{
+                        $("#content div.progress_bar div.marker").width(progressBarWidth);
+                    }
+                    $('#content .time').fadeIn("slow");
+                }
+            }
+        } else if(newData.msg) {
+            clearScreen(function() {
+                $('#msg h1').html(newData.msg);
+                $('#msg').fadeIn('slow');
+            });
+        }
+        setTimeout(function() {
+            doUpdate(oldSongData);
+        }, 3000);
+    });
+}
 
 function clearScreen(doNext) {
     $('#content, #msg, #stationList, #newStation').fadeOut('slow').promise().done(function() {
@@ -71,14 +76,6 @@ function updateSong(data) {
     $(album ).text(data.album ).addClass('album');
     $("#marquee-wrap").html("").append(title,artist,album);
     
-    if(data.duration == "NEWS") {
-        $('#content .duration').html("");
-        $('#controls').fadeOut('fast');
-    } else {
-        $('#content .duration').html(data.duration);
-        if(!$('#controls').is(':visible'))
-            $('#controls').fadeIn('slow');
-    }
     $('#content .details').html("EMPTY").hide();
     if(data.loved) {
         $('#content .love').show();
@@ -86,6 +83,12 @@ function updateSong(data) {
         $('#content .love').hide();
     }
     $('#content .albumart').attr("src", data.artURL).attr("alt", data.album + " by " + data.artist);
+    
+    if(data.percentage == null) {
+        $('#content .time').hide();
+        $("#content div.progress_bar div.marker").width(0);
+    }
+                
 };
 
 function startScroll() {

@@ -66,7 +66,7 @@ elif event == "songfinish":
 	currMin  = int(strftime("%M", gmtime()))
 	if currNews != lastNews and currNews == currHour and currMin < 30 :
 		open(lastNewsPath, "w").write(str(feed.entries[0].updated_parsed.tm_hour))
-		open(curSongPath, "w").write(buildJSON(feed.entries[0].title, feed.feed.title, feed.feed.title, "http://media.npr.org/images/podcasts/2013/primary/hourly_news_summary.png", 0, "null"))
+		open(curSongPath, "w").write(buildJSON(feed.entries[0].title, "NPR News", "Hourly Summary", "http://media.npr.org/images/podcasts/2013/primary/hourly_news_summary.png", 0, "null"))
 		open(pbarOutPath, "w").write("NEWS")
 		open(pbarInPath, "w").write("p")
 		
