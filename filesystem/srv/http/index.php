@@ -6,6 +6,7 @@
     <link rel="icon" type="image/png" href="favicon.ico" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="http://cdn.craig.is/js/mousetrap/mousetrap.min.js?88c23"></script>
+    <script src="/inc/jquery-animateoverflow.min.js"></script>
     <script src="/inc/script.js"></script>
 </head>
 <body>

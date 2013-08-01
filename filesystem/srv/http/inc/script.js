@@ -1,43 +1,3 @@
-$.fn.pingpongscroll = function () {
-    var delay = 30;
-    $(this).wrapInner('<span>');
-    var contentWidth = $(this).children('span').width();
-    var boxWidth = $(this).width();
-
-    if (contentWidth > boxWidth) {
-        var startIndent = parseInt($(this).css('text-indent'));
-        var currIndent  = startIndent;
-        var left = true;
-        $(this).pingpongscrollstep(contentWidth, startIndent, currIndent, left, delay);
-    }
-};
-$.fn.pingpongscrollstep = function (contentWidth, startIndent, currIndent, left, delay) {
-    if($(this).length != 0) {
-        thisdelay = delay;
-        if(left) {
-            if(contentWidth + currIndent > $(this).width()) {
-                currIndent = currIndent - 1;
-                $(this).css('text-indent', currIndent);
-            } else {
-                left = false;
-                thisdelay = thisdelay*20;
-            }
-        } else {
-            if(currIndent < startIndent) {
-                currIndent = currIndent + 1;
-                $(this).css('text-indent', currIndent);
-            } else {
-                left = true;
-                thisdelay = thisdelay*30;
-            }
-        }
-        var thiselement = this;
-        setTimeout(function(){
-            $(thiselement).pingpongscrollstep(contentWidth, startIndent, currIndent, left, delay);
-        }, thisdelay);
-    }
-};
-
 $(document).ready(function() {
     var newDataPlain, oldSongData, newSongData;
     window.setInterval(function() {
@@ -70,18 +30,16 @@ $(document).ready(function() {
                     $('#content .remaining').html(newSongData.remaining);
                     $('#content .duration' ).html(newSongData.duration );
                     var progressBarWidth = "" + newSongData.percentage+"%";
-                    
-                    if(!newSongData.percentage) {
+                    if(newSongData.percentage == "") {
                         $('#content .time').hide();
                         $("#content div.progress_bar div.marker").width(0);
                     }else {
                         if(oldSongData.duration == newSongData.duration) {
                             $("#content div.progress_bar div.marker").animate({ width: progressBarWidth }, 1000);
-                            $('#content .time').fadeIn("slow");
                         }else{
                             $("#content div.progress_bar div.marker").width(progressBarWidth);
-                            $('#content .time').fadeIn("slow");
                         }
+                        $('#content .time').fadeIn("slow");
                     }
                 }
             } else if(newData.msg) {
@@ -131,9 +89,7 @@ function updateSong(data) {
 };
 
 function startScroll() {
-    $('#marquee-wrap').children().each(function(){
-        $(this).pingpongscroll();
-    });
+    $('#marquee-wrap').children().animateOverflow();
 }
 
 function explainSong() {
