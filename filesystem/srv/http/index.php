@@ -1,3 +1,10 @@
+<?php
+    require_once 'inc/Mobile_Detect.php';
+    $detect = new Mobile_Detect;
+    $deviceType = ($detect->isMobile() ? ($detect->isTablet() ? 'tablet' : 'phone') : 'computer');
+    if($deviceType == 'phone')
+        header( 'Location: mobile.php' );
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

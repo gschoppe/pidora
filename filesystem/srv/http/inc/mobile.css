@@ -16,6 +16,7 @@
         margin-left: auto;
         margin-right: auto;
         text-align: center;
+        color: #fff;
     }
 
     a {
@@ -27,9 +28,8 @@
         text-decoration:none;
     }
     h1, h2, h3 {
-        margin:.8em 0 .2em 0;
+        margin:.1em 0 .1em 0;
         padding:0;
-        color:#fff;
     }
     p {
         margin:.4em 0 .8em 0;
@@ -49,7 +49,7 @@
     #header ul {
         width:100%;
         list-style:none;
-        margin:10px 0 0 0;
+        margin:10px 0 10px 0;
         padding:0;
     }
     #header ul li {
@@ -105,7 +105,7 @@
     }
     /* Full page settings */
     .fullpage {
-        background:#c0c0c0;        /* page background colour */
+        background:#000;        /* page background colour */
     }
     .fullpage .col1 {
         width:100%;          /* page width minus left and right padding */

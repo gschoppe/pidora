@@ -30,7 +30,7 @@ $(document).ready(function() {
                     $('#content .remaining').html(newSongData.remaining);
                     $('#content .duration' ).html(newSongData.duration );
                     var progressBarWidth = "" + newSongData.percentage+"%";
-                    if(newSongData.percentage == "") {
+                    if(newSongData.percentage == null) {
                         $('#content .time').hide();
                         $("#content div.progress_bar div.marker").width(0);
                     }else {
