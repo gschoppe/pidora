@@ -93,7 +93,12 @@ function updateSong(data) {
 };
 
 function startScroll() {
-    $('#marquee-wrap').children().animateOverflow();
+    $('#marquee-wrap').children().each(function() {
+        $(this).text($(this).text());
+    });
+    setTimeout(function() {
+        $('#marquee-wrap').children().animateOverflow();
+    },100);
 }
 
 function explainSong() {

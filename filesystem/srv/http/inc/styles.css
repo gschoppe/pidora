@@ -9,12 +9,12 @@ a {cursor: pointer;}
 #controls a.right {float: right;}
 
 #controls a span#volume {
-    background: url('controls-volume.png'    ) center center no-repeat;
+    background: url('controls-volume.png') center center no-repeat;
     text-indent: 0;
-    color: #ddd;
+    color: #000;
     font-size:10px;
     font-weight: bold;
-    line-height: 40px;
+    line-height: 38px;
     width: 30px;
     text-align: center;
 }
