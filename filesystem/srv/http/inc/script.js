@@ -48,6 +48,7 @@ function doUpdate(oldSongData) {
                     $('#content .time').fadeIn("slow");
                 }
             }
+            $('#volume').text(newSongData.volume + '%');
         } else if(newData.msg) {
             clearScreen(function() {
                 $('#msg h1').html(newData.msg);
@@ -56,7 +57,7 @@ function doUpdate(oldSongData) {
         }
         setTimeout(function() {
             doUpdate(oldSongData);
-        }, 3000);
+        }, 1000);
     });
 }
 
@@ -83,7 +84,7 @@ function updateSong(data) {
         $('#content .love').hide();
     }
     $('#content .albumart').attr("src", data.artURL).attr("alt", data.album + " by " + data.artist);
-    
+        
     if(data.percentage == null) {
         $('#content .time').hide();
         $("#content div.progress_bar div.marker").width(0);
@@ -112,6 +113,7 @@ function explainSong() {
 
 function stationSetup() {
     var index = 0;
+    listStations();
     getStations(index);
     Mousetrap.reset();
     Mousetrap.bind('0', function() { sendCommand('s'.concat(index,'0')); });
@@ -130,10 +132,49 @@ function stationSetup() {
 }
 
 function getStations(index) {
-    $.get("api.php", {station:index}).done(function(stationList) {
+    var min = index*10;
+    var max = min + 10;
+    var output = "<a onclick=\"clearStations();\"; id=\"closeStations\"><span>esc - Cancel</span></a><br />\n";
+    $.get("api.php", {command:'stationList'}).done(function(response) {
+        var responseObj = JSON.parse(response);
+        var stationList = responseObj.stations;
+        if(min<0 || min >= stationList.length) {
+            min=0;
+            max=10;
+        }
+        var next = "";
+        var back = "";
+        
+        if(max >= stationList.length) {
+            max = stationList.length;
+        } else {
+            next = " <a onclick=\"getStations(" + (index+1) + ");\">&gt;&gt; N - Next</a>";
+        }
+        if(index > 0)
+            back = "<a onclick=\"getStations(" + (index-1) + ");\">B - Prev &lt;&lt;</a> ";
+        for(i = min; i < max; i++) {
+            output += "<a onclick=\"sendCommand('s" + stationList[i].id + "');hideStations();\">";
+            output += stationList[i].id.substring(1) + " - " + stationList[i].name;
+            output += "</a><br/>\n"
+        }
+        var numPages = Math.ceil(stationList.length / 10);
+        output += "<div class=\"pagenum\">" + back + "Page " + (index+1) + " of " + numPages + next + "</div>\n";
         clearScreen(function() {
-            $('#stationList').html(stationList).fadeIn('slow');
+            $('#stationList').html(output).fadeIn('slow');
         });
+    });
+}
+function listStations() {
+    $.get("api.php", {command:'stationList'}).done(function(response) {
+        var responseObj = JSON.parse(response);
+        var stationList = responseObj.stations;
+        for (index = 0; index < stationList.length; ++index) {
+            var id = stationList[index];
+            
+        }
+        //clearScreen(function() {
+        //    $('#stationList').html(stationList).fadeIn('slow');
+        //});
     });
 }
 

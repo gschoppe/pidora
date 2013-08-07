@@ -29,9 +29,9 @@
         <a onclick="sendCommand('t');"  ><span id="tired"   title="Tired"  >Tired  </span></a>
         <a onclick="explainSong();"     ><span id="explain" title="Explain">Explain</span></a>
         <a><span class="nocontrol"> | </span></a>
-        <a onclick="sendCommand('(');"  ><span id="voldown" title="Vol -"  >Vol -  </span></a>
-        <a><span class="nocontrol" id="volume">Volume</span><a>
-        <a onclick="sendCommand(')');"  ><span id="volup"   title="Vol +"  >Vol +  </span></a>
+        <a onclick="sendCommand('v-');"  ><span id="voldown" title="Vol -"  >Vol -  </span></a>
+        <a><span class="nocontrol" id="volume"></span><a>
+        <a onclick="sendCommand('v+');"  ><span id="volup"   title="Vol +"  >Vol +  </span></a>
 
         <a class="right" onclick="sendCommand('q');"><span id="restart" title="Restart">Restart</span></a>
     </div>

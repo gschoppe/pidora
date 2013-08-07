@@ -74,6 +74,32 @@
             $("h1, h2").animateOverflow();
         }
         
+        function sendCommand(action) {
+            $.get("api.php", {command:action});
+        };
+        
+        function showStations() {
+            $.get("api.php", {command:'stationList'}).done(function(response) {
+                var responseObj = JSON.parse(response);
+                var stationList = responseObj.stations;
+                var output = "<ol>";
+                for(i = 0; i < stationList.length; i++) {
+                    output += "<li><a onclick=\"sendCommand('s" + stationList[i].id + "');clearStations();\">";
+                    output += stationList[i].name;
+                    output += "</a></li>\n"
+                }
+                output += "</ol>";
+                $('#stationList .stations').html(output);
+                $('#albumArt, #trackInfo').hide();
+                $('#stationList').show();
+            });
+        }
+        function clearStations() {
+            $('#stationList').hide();
+            $('#albumArt, #trackInfo').show();
+            $('#stationList .stations').html("");
+        }
+        
         $(document).ready(function() {
             var emptyVar;
             doUpdate(emptyVar);
@@ -82,17 +108,30 @@
 </head>
 <body>
 <div id="header">
-    <ul>
-        <li><a href="<?=$pidoraurl;?>?p=p">Pause</a></li>
-        <li><a href="<?=$pidoraurl;?>?p=n">Next</a></li>
-        <li><a href="<?=$pidoraurl;?>?p=%2B">Love</a></li>
-        <li><a href="<?=$pidoraurl;?>?p=-">Ban</a></li>
-        <li><a href="<?=$pidoraurl;?>?p=t">Tired</a></li>
+    <ul id="controls">
+        <li><a onclick="showStations();"    ><span id="changestation" title="Change Station"    >Change Station    </span></a></li>
+        <li><a><span class="nocontrol"> | </span></a></li>
+        <li><a onclick="sendCommand('p');"  ><span id="pause"   title="Pause"  >Pause  </span></a></li>
+        <li><a onclick="sendCommand('n');"  ><span id="next"    title="Next"   >Next   </span></a></li>
+        <li><a><span class="nocontrol"> | </span></a></li>
+        <li><a onclick="sendCommand('+');"  ><span id="love"    title="Love"   >Love   </span></a></li>
+        <li><a onclick="sendCommand('-');"  ><span id="ban"     title="Ban"    >Ban    </span></a></li>
+        <li><a onclick="sendCommand('t');"  ><span id="tired"   title="Tired"  >Tired  </span></a></li>
+        <li><a><span class="nocontrol"> | </span></a></li>
+        <li><a onclick="sendCommand('v-');"  ><span id="voldown" title="Vol -"  >Vol -  </span></a></li>
+        <li><a><span class="nocontrol" id="volume">Volume</span><a></li>
+        <li><a onclick="sendCommand('v+');"  ><span id="volup"   title="Vol +"  >Vol +  </span></a></li>
+
+        <li><a class="right" onclick="sendCommand('q');"><span id="restart" title="Restart">Restart</span></a></li>
     </ul>
 </div>
-<div class="colmask fullpage">
-    <div class="col1">
+<div class="colmask">
+    <div class="colleft" id="albumArt">
         <!-- Column 1 start -->
+        <img class="displayed songCover" src="/inc/pandora.png" alt=""/>
+        <!-- Column 1 end -->
+    </div>
+    <div class="colright span2cols" id="trackInfo">
         <div class="displayed">
             <div id="info-wrap">
                 <h1><span class="songTitle"></span ></h1>
@@ -101,8 +140,14 @@
             </div>
             <span class="songRemaining"></span>
         </div>
-        <img class="displayed songCover" src="/inc/pandora.png" width="350", height="350", alt="">
-        <!-- Column 1 end -->
+    </div>
+    <div class="span3cols" id="stationList" style="display:none">
+        <div class="closeButton">
+            <a onclick="clearStations();" id="closeStations"><span>Close</span></a>
+        </div>
+        <div class="stations">
+        
+        </div>
     </div>
 </div>
 <div class="footer" style=display:none>

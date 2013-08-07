@@ -1,18 +1,29 @@
 body {
-	background-color: #000;
-	color: #fff;
-	font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
 }
 
 a {cursor: pointer;}
 #controls a {float:left;}
 #controls a.right {float: right;}
 
+#controls a span#volume {
+    background: url('controls-volume.png'    ) center center no-repeat;
+    text-indent: 0;
+    color: #ddd;
+    font-size:10px;
+    font-weight: bold;
+    line-height: 40px;
+    width: 30px;
+    text-align: center;
+}
+
 #controls a span {
-	display: block;
-	width: 24px;
-	height: 24px;
-	text-indent:-9000px;
+    display: block;
+    width: 24px;
+    height: 24px;
+    text-indent:-9000px;
 }
 
 #controls a span.nocontrol {cursor: default;}
@@ -29,7 +40,6 @@ a {cursor: pointer;}
 #explain       {background: url('controls-explain.png'   ) center center no-repeat;}
 
 #voldown       {background: url('controls-voldown.png'   ) center center no-repeat;}
-#volume        {background: url('controls-volume.png'    ) center center no-repeat;}
 #volup         {background: url('controls-volup.png'     ) center center no-repeat;}
 
 #restart       {background: url('controls-restart.png'   ) center center no-repeat;}
@@ -73,6 +83,12 @@ a {cursor: pointer;}
 	text-indent:-9000px;
     background: url('addStation.png') center center no-repeat;
     cursor: pointer;
+}
+
+#stationList .pagenum {
+    text-align: right;
+    font-size: .75em;
+    
 }
 
 a#closeStations {float: right;}

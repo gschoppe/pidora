@@ -23,15 +23,22 @@ A network-controlled pandora client for embedded systems, such as the Raspberry 
 5.	Open /srv/http/.config/pianobar/config in your favorite text editor, and enter your pandora username and password in the indicated spots 
 6.	Enter the following commands:<br/>
 <tt>gpasswd -a http audio</tt><br/>
-<tt>mkfifo /srv/http/ctl</tt><br/>
+<tt>mkfifo /srv/http/.config/pianobar/input</tt><br/>
 <tt>chown -R http /srv/http</tt><br/>
 <tt>chmod -R 777 /srv/http</tt><br/>
 <tt>systemctl enable php-fpm</tt><br/>
 <tt>systemctl enable lighttpd</tt><br/>
 <tt>reboot</tt>
-7.	open your browser to the IP address of the device (or 127.0.0.1, if you are working from the device directly)
+7.	run <tt>sudo -u http pianobar</tt> and choose an initial station, then quit.
+8.	open your browser to the IP address of the device (or 127.0.0.1, if you are working from the device directly)
 
-That's it for the installation.
+That's it for the normal installation.
+
+If you want to play with adding hotkey support, you will want to add the following commands: <br/>
+<tt>pacman -Sy gcc pip</tt><br/>
+<tt>pip install evdev</tt><br/>
+<tt>chmod +x -R /root/pidora-keyboard</tt><br/>
+
 
 Contact me
 ==========

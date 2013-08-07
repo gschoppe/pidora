@@ -4,13 +4,25 @@
         border:0;           /* This removes the border around the viewport in old versions of IE */
         width:100%;
         min-width:300px;        /* Minimum width of layout - remove line if not required */
-        background:#101a4d;
+        background:#000;
                         /* The min-width property does not work in old versions of Internet Explorer */
         font-size:90%;
         font-family: Arial, sans-serif;
-        overflow:hidden;
-        
+        color: #fff;
     }
+    #stationList {
+        text-align: center;
+    }
+    #stationList .stations {
+        display: inline-block;
+        text-align: left;
+        font-size: 1.5em;
+    }
+    #stationList .stations ol {
+        list-style:decimal-leading-zero;
+        font-weight: bold;
+    }
+
     .displayed {
         display: block;
         margin-left: auto;
@@ -21,11 +33,8 @@
 
     a {
         color:#fff;
-    }
-    a:hover {
-        color:#369;
-        background:#fff;
-        text-decoration:none;
+        font-weight: bold;
+        cursor: pointer;
     }
     h1, h2, h3 {
         margin:.1em 0 .1em 0;
@@ -37,8 +46,11 @@
         padding:0;
         color: #c0c0c0;
     }
-    img {
-        margin:10px 0 5px;
+
+    img.songCover {
+        width: 350px;
+        max-width: 100%;
+        height: auto;
     }
     /* Header styles */
     #header {
@@ -53,39 +65,53 @@
         margin:10px 0 10px 0;
         padding:0;
     }
-    #header ul li {
-        display:inline-block;
-        list-style:none;
-        margin:0;
-        padding:0;
+    
+    #controls a {float:left;}
+    #controls a.right {float: right;}
+
+    #controls a span {
+        display: block;
+        width: 24px;
+        height: 24px;
+        text-indent:-9000px;
     }
-    #header ul li a {
-        margin:0 0 0 1px;
-        padding:3px 10px;
-        text-align:center;
-        color:#000;
-        text-decoration:none;
-        position:relative;
-        line-height:1.3em;
-        background:#eee;
+
+    #controls a span.nocontrol {cursor: default;}
+
+    #changestation {background: url('controls-stations.png'  ) center center no-repeat;}
+    #addstation    {background: url('controls-newstation.png') center center no-repeat;}
+
+    #pause         {background: url('controls-play.png'      ) center center no-repeat;}
+    #next          {background: url('controls-next.png'      ) center center no-repeat;}
+
+    #love          {background: url('controls-love.png'      ) center center no-repeat;}
+    #ban           {background: url('controls-ban.png'       ) center center no-repeat;}
+    #tired         {background: url('controls-tired.png'     ) center center no-repeat;}
+    #explain       {background: url('controls-explain.png'   ) center center no-repeat;}
+
+    #voldown       {background: url('controls-voldown.png'   ) center center no-repeat;}
+    #volume        {background: url('controls-volume.png'    ) center center no-repeat;}
+    #volup         {background: url('controls-volup.png'     ) center center no-repeat;}
+
+    #restart       {background: url('controls-restart.png'   ) center center no-repeat;}
+    
+    a#closeStations {float: right;}
+    a#closeStations span {
+        display: block;
+        width: 24px;
+        height: 24px;
+        text-indent:-9000px;
+        background: url('controls-close.png') center center no-repeat;
     }
-    #header ul li a:hover {
-        background:#369;
-        color:#fff;
-    }
-    #header ul li a.active,
-    #header ul li a.active:hover {
-        color:#fff;
-        background:#000;
-        font-weight:bold;
-    }
+    
     /* 'widths' sub menu */
     /* column container */
     .colmask {
         position:relative;  /* This fixes the IE7 overflow hidden bug */
         clear:both;
-        float:left;
-        width:100%;         /* width of whole page */
+        max-width:960px;
+        margin: 0 auto;
+        padding: 10px;
         overflow:hidden;        /* This chops off any overhanging divs */
     }
     /* common column settings */
@@ -93,16 +119,15 @@
     .colmid,
     .colleft {
         float:left;
-        width:100%;
+        width: 320px;
+        max-width:100%;
         position:relative;
     }
-    .col1,
-    .col2,
-    .col3 {
-        float:left;
-        position:relative;
-        padding:0 0 1em 0;
-        overflow:hidden;
+    .span2cols {
+        width: 640px;
+    }
+    .span3cols {
+        width: 100%;
     }
     /* Full page settings */
     .fullpage {

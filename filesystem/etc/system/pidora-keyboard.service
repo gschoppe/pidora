@@ -1,0 +1,8 @@
+[Unit]
+After=default.target
+
+[Service]
+ExecStart=/root/pidora-keyboard/pidora-keyboard.py start
+
+[Install]
+WantedBy=default.target
